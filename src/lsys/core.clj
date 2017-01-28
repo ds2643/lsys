@@ -44,6 +44,7 @@
   (q/background 200)) ;; grey bg
 
 (defn grammar-map
+  ;; TODO: change x and y parameters to c type from generate-coordinates
   "Given a set of parameters,
   t -> symbol with associated meaning in context free grammar
   x -> x-coordinate
@@ -53,25 +54,25 @@
   return a coordinate, angle vector corresponding to the step dicated by turtle graphics"
   [t x y a l]
   (cond
-    (= t :+) [x y (+ a (/ Math/PI 3))]
-    (= t :-) [x y (- a (/ Math/PI 3))]
-    :else [(+ x(* (q/cos a) l)) (+ x (* (q/sin a) l)) a]))
+    (= t :+) [[x y] (+ a (/ Math/PI 3))]
+    (= t :-) [[x y] (- a (/ Math/PI 3))]
+    :else [[(+ x (* (q/cos a) l)) (+ y (* (q/sin a) l))] a]))
 
 (defn generate-coordinates
   "Given a sequence of symbols indicating a recursive expansion, produce a set of coordinates renderable by turtle graphics"
   [xs l]
   (letfn
     [(aux [xs c acc l]
-      (cond
-        (empty? xs)
-        acc
-        :else
-        (aux
-          (rest xs)
-          (grammar-map (first x) (first (first c)) (second (first c)) (second c) l)
-          (cons (first c) acc))))] ;; current must include angle...
-    (aux xs [[0 0], 0] '() l)))
-i
+       (let [cur_x (first (first c))
+             cur_y (second (first c))
+             cur_a (second c)]
+        (cond
+          (empty? xs)
+          acc
+          :else
+          (aux (rest xs) (grammar-map (first xs) cur_x cur_y cur_a l) (cons (first c) acc) l))))]
+    (into [] (reverse (aux xs [[0.0 0.0], 0] '() l)))))
+
 (defn draw
   []
   nil)

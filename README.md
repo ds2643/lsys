@@ -1,6 +1,6 @@
 # lsys
 
-Component of browser-embedded interpreter coauthored with **Tara Vancil**.
+Component of browser-embedded interpreter coauthored with **Tara Vancil**. Additional attribution to **Chris Lample**.
 
 lsys produces images of sierpinky triangles using a user-supplied set of rules defining a context-free grammar and turtle graphics. Generated images are rendered by the Quil front-end to the processing library.
 

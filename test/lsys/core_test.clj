@@ -1,5 +1,6 @@
 (ns lsys.core-test
   (:require [clojure.test :refer :all]
+            [quil.core :as q]
             [lsys.core :refer :all]))
 
 (deftest test-specify-grammar
@@ -32,28 +33,34 @@
 (deftest test-grammar-map-delta-angle
   (testing "given a symbol indicating a change in angle, grammar-map produces the appropriate change in angle while displacement remains unchanged")
   (let [t :+
-        x 0
-        y 0
+        x 0.0
+        y 0.0
         a 0
-        l 1
+        l 1.0
         observed (grammar-map t x y a l)
-        expected [[0 0] (/ 3 Math/PI)]]
+        expected [[0.0 0.0] (/ Math/PI 3)]]
     (is (= expected observed))))
+
 (deftest test-grammar-map-displacement
   (testing "given a symbol indicating a step forward on a cartesean plane, grammar-map produces the appropriate change coordinates while angle remains unchanged")
   (let [t :a
-        x 0
-        y 0
+        x 0.0
+        y 0.0
         a 0
-        l 1
+        l 1.0
         observed (grammar-map t x y a l)
-        expected [[0 1] 0]]
+        expected [[1.0 0.0] 0]]
     (is (= expected observed))))
 
 (deftest test-generate-coordinates
   (testing "...")
-  (let [parameter-seq [:a :b :+ :a :b :- :a :b]
+  (let [parameter-seq [:a :b :+ :a :b :-]
         length 1
         observed (generate-coordinates parameter-seq length)
-        expected [[0 0] [0 1] [0 1] [] [] [] [] []]] ;; TODO: calculate coordinates by hand
+        expected [[0.0 0.0]
+                  [1.0 0.0]
+                  [2.0 0.0]
+                  [2.0 0.0]
+                  [(+ 2.0 (q/cos (/ Math/PI 3))) (+ 0.0 (q/sin (/ Math/PI 3)))]
+                  [(+ 2.0 (* 2 (q/cos (/ Math/PI 3)))) (+ 0.0 (* 2 (q/sin (/ Math/PI 3))))]]]
     (is (= expected observed))))
