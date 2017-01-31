@@ -70,12 +70,22 @@
           (empty? xs)
           acc
           :else
-          (aux (rest xs) (grammar-map (first xs) cur_x cur_y cur_a l) (cons (first c) acc) l))))]
+          (aux (rest xs)
+               (grammar-map (first xs) cur_x cur_y cur_a l)
+               (cons (first c) acc) l))))]
     (into [] (reverse (aux xs [[0.0 0.0], 0] '() l)))))
 
 (defn draw
   []
-  nil)
+  (q/no-stroke)
+  (q/background 255 255 236)
+  (let [ps [[0 0] [0 1] [0 2] [0 3]]] ;; TODO: replace with proper function call
+    (doseq [i (range (dec (count ps)))]
+      (let [x1 (first (nth ps i))
+            y1 (second (nth (ps i)))
+            x2 (first (nth ps i))
+            y2 (second (nth ps i))]
+        (q/line x1 y1 x2 y2)))))
 
 (q/defsketch sierpinski-triangle
   :title "Sierpinski Triangle"
@@ -85,6 +95,5 @@
   :size [323 200])
 
 (defn -main
-  "I don't do a whole lot ... yet."
   [& args]
-  (println "Hello, World!"))
+  nil))
