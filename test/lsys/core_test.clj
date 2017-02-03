@@ -53,7 +53,7 @@
     (is (= expected observed))))
 
 (deftest test-generate-coordinates
-  (testing "...")
+  (testing "generate coordinates function")
   (let [parameter-seq [:a :b :+ :a :b :-]
         length 1
         observed (generate-coordinates parameter-seq length)
